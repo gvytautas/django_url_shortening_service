@@ -1,16 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.conf import settings
 from .forms import UrlForm
 from .models import Url
-import secrets
+from .business_layer.short_url_generator import ShortUrlGenerator
 
 
 # Create your views here.
 
 def index(request):
     if request.method == 'POST':
-        chars = 'QWERTZUIOPASDFGHJKLYXCVBNMqwertzuiopasdfghjklyxcvbnm0123456789'  # noqa
-        short_url = ''.join(secrets.choice(chars) for i in range(7))
+        short_url = ShortUrlGenerator(settings.SHORT_URL_LENGTH).generate_short_url()
         form = UrlForm(data={
             'short_url': short_url,
             'url': request.POST.get('url')
@@ -19,12 +19,10 @@ def index(request):
             form.save()
             messages.info(request, f'Short url: {short_url}')
             return redirect('index')
-
     form = UrlForm()
-
     return render(request, 'index.html', context={'form': form})
 
 
-def short_url(request, short_url):
+def resolve(request, short_url: str):
     url = get_object_or_404(Url, short_url=short_url)
-    return redirect(url.url)
+    return redirect(url.url, permanent=False)
