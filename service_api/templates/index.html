@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    {% if field.name == 'url' %}
+    <div class="fieldWrapper">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+    </div>
+    {% endif %}
+    {% endfor %}
+    <input type="submit" value="Short">
+</form>
+{% endblock %}
