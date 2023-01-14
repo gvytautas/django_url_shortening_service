@@ -101,11 +101,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Vilnius'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -119,3 +119,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Service settings
 SHORT_URL_LENGTH = 7
+MAXIMUM_NUMBER_OF_CLICKS = 5

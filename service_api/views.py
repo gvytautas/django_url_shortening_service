@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect, get_object_or_404
+import datetime
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.contrib import messages
 from django.conf import settings
 from .forms import UrlForm
@@ -12,6 +13,8 @@ def index(request):
     if request.method == 'POST':
         short_url = ShortUrlGenerator(settings.SHORT_URL_LENGTH).generate_short_url()
         form = UrlForm(data={
+            'ip_address': request.META.get('REMOTE_ADDR'),
+            'http_referer': request.META.get('HTTP_REFERER'),
             'short_url': short_url,
             'url': request.POST.get('url')
         })
@@ -25,4 +28,8 @@ def index(request):
 
 def resolve(request, short_url: str):
     url = get_object_or_404(Url, short_url=short_url)
+    if not url.is_active:
+        return HttpResponse('Url deactivated', status=404)
+    url.number_of_clicks += 1
+    url.save()
     return redirect(url.url, permanent=False)
