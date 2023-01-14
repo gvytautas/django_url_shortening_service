@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if results %}
+Average redirect time: {{ results.average_redirect_time }}
+Average direct time: {{ results.average_direct_time }}
+Average resolve time: {{ results.average_resolve_time }}
+{% endif %}
+<form method="post">
+    {% csrf_token %}
+    <label>Sample size</label>
+    <input name="sample_size" type="number">
+    <label>Long Url</label>
+    <input name="long_url" type="url">
+    <input type="submit" value="Test">
+</form>
+{% endblock %}
