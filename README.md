@@ -14,6 +14,7 @@ python manage.py runserver
 ```
 
 ## Notes
++ Application was built on Python 3.11
 + No check for short url uniqueness implemented since 62^7 gives over 3.5 trillion unique combinations.
 + To increase speed of URL resolving:
   + to avoid unnecessary redirects in application, both versions of urls were implemented, with and without trailing "/".
